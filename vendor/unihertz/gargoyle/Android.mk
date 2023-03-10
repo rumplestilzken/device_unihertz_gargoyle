@@ -14,7 +14,7 @@ $(file): $(TARGET_PREBUILT_KERNEL) | $(ACP)
 #
 # no boot loader, so we don't need any of that stuff..
 #
-LOCAL_PATH := vendor/unihertz/titan_slim
+LOCAL_PATH := vendor/unihertz/gargoyle
 #
 include $(CLEAR_VARS)
 #
