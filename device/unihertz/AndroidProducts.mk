@@ -1,7 +1,7 @@
 PRODUCT_MAKEFILES += \
-	$(LOCAL_DIR)/lineage_gargoyle.mk \
-	$(LOCAL_DIR)/lineage_gargoyle_slim.mk
+	$(LOCAL_DIR)/lineage_gargoyle_bvN.mk \
+	$(LOCAL_DIR)/lineage_gargoyle_bgN.mk 
 
 COMMON_LUNCH_CHOICES := \
-	lineage_gargoyle-userdebug \
-  lineage_gargoyle_slim-userdebug
+	lineage_gargoyle_bvN-userdebug \
+	lineage_gargoyle_bgN-userdebug
