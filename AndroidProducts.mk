@@ -11,5 +11,5 @@ COMMON_LUNCH_CHOICES := \
 	lineage_gargoyle_bgN-userdebug \
 	lineage_gargoyle_slim_bvN-userdebug \
 	lineage_gargoyle_slim_bgN-userdebug \
-	lineage_gargoyle_pocket_bgN-userdebug \
+	lineage_gargoyle_pocket_bvN-userdebug \
 	lineage_gargoyle_pocket_bgN-userdebug 
