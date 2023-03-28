@@ -61,6 +61,7 @@ ENABLE_CPUSETS := true
 ENABLE_SCHEDBOOST := true
 
 #Audio
+#Neither of these keys work for the Titan
 #BOARD_USES_ALSA_AUDIO := true
 #BUILD_WITH_ALSA_UTILS := true
 
