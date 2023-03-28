@@ -6,6 +6,7 @@ include device/phh/treble/tdgsi_arm64_ab/BoardConfig.mk
 # Imported from TWRP Recovery Partition Configuration
 #TWRP_EVENT_LOGGING := true
 
+BOARD_USES_RECOVERY_AS_BOOT := true
 # BOARD_INCLUDE_RECOVERY_DTBO := true
 # BOARD_BOOTIMG_HEADER_VERSION := 1
 
@@ -24,12 +25,16 @@ include device/phh/treble/tdgsi_arm64_ab/BoardConfig.mk
 #TARGET_NO_RADIOIMAGE := true
 
 #Kernel
-#TARGET_NO_KERNEL := true
-# TARGET_NO_KERNEL_OVERRIDE := true
-# TARGET_PREBUILT_KERNEL := false
-#HAS_PREBUILT_KERNEL := false
-# NEEDS_KERNEL_COPY := false
-# BOARD_KERNEL_IMAGE_NAME = zImage
+TARGET_KERNEL_CONFIG := titan_ufs_defconfig
+TARGET_NO_KERNEL := false
+TARGET_NO_KERNEL_OVERRIDE := false
+TARGET_PREBUILT_KERNEL := false
+KERNEL_ARCH := arm64
+HAS_PREBUILT_KERNEL := false
+NEEDS_KERNEL_COPY := true
+BOARD_KERNEL_IMAGE_NAME = zImage
+# BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.selinux=permissive
+# BOARD_MKBOOTIMG_ARGS := --pagesize 2048 --base 0x40078000 --kernel_offset 0x00008000 --ramdisk_offset 0x14f88000 --second_offset 0x00e88000 --tags_offset 0x13f88000
 
 # # Platform
 TARGET_BOARD_PLATFORM := mt6771
@@ -58,10 +63,6 @@ ENABLE_SCHEDBOOST := true
 #Audio
 #BOARD_USES_ALSA_AUDIO := true
 #BUILD_WITH_ALSA_UTILS := true
-
-# Kernel
-# BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.selinux=permissive
-# BOARD_MKBOOTIMG_ARGS := --pagesize 2048 --base 0x40078000 --kernel_offset 0x00008000 --ramdisk_offset 0x14f88000 --second_offset 0x00e88000 --tags_offset 0x13f88000
 
 # Partitions
 # BOARD_BOOTIMAGE_PARTITION_SIZE := 0x2000000
