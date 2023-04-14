@@ -1,3 +1,5 @@
+$(call inherit-product, device/unihertz/common.mk)
+
 #Treble
 #PRODUCT_FULL_TREBLE :=  true
 #PRODUCT_FULL_TREBLE_OVERRIDE := true
