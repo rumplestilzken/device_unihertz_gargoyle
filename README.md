@@ -1,1 +1,1 @@
-LineageOS Device Tree for Unihertz Titan
+LineageOS Device Tree for Unihertz devices
