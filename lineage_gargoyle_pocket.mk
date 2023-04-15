@@ -20,6 +20,9 @@ RESOURCE_PATH := device/unihertz/gargoyle_pocket
 PRODUCT_COPY_FILES += \
 	$(RESOURCE_PATH)/rumplestilzken_firstboot.sh:$(TARGET_COPY_OUT_SYSTEM)/bin/rumplestilzken_firstboot.sh \
 
+PRODUCT_COPY_FILES += \
+	$(RESOURCE_PATH)/excluded-input-devices.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/excluded-input-devices.xml \
+
 #Copy keyboard files into place.
 PRODUCT_COPY_FILES += \
     $(RESOURCE_PATH)/keyboard/system_usr_idc/aw9523-key.idc:$(TARGET_COPY_OUT_SYSTEM)/usr/idc/aw9523-key.idc \
