@@ -18,7 +18,7 @@ RESOURCE_PATH := device/unihertz/gargoyle_pocket
 
 #Init Scripts
 PRODUCT_COPY_FILES += \
-	$(RESOURCE_PATH)/gargoyle_pocket/rumplestilzken_firstboot.sh:$(TARGET_COPY_OUT_SYSTEM)/bin/rumplestilzken_firstboot.sh \
+	$(RESOURCE_PATH)/rumplestilzken_firstboot.sh:$(TARGET_COPY_OUT_SYSTEM)/bin/rumplestilzken_firstboot.sh \
 
 #Copy keyboard files into place.
 PRODUCT_COPY_FILES += \
