@@ -1,0 +1,10 @@
+service rumplestilzken_firstboot /bin/sh /system/bin/rumplestilzken_firstboot.sh
+    class main
+    group root system
+    user root
+    seclabel u:r:su:s0
+
+on boot
+    domainname global
+    start rumplestilzken_firstboot
+

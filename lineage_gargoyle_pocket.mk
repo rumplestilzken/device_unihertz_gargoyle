@@ -16,6 +16,11 @@ $(call inherit-product, device/unihertz/common.mk)
 
 RESOURCE_PATH := device/unihertz/
 
+#Init Scripts
+PRODUCT_COPY_FILES += \
+	$(RESOURCE_PATH)/gargoyle_pocket/rumplestilzken_firstboot.rc:$(TARGET_COPY_OUT_SYSTEM)/etc/init/rumplestilzken_firstboot.rc \
+	$(RESOURCE_PATH)/gargoyle_pocket/rumplestilzken_firstboot.sh:$(TARGET_COPY_OUT_SYSTEM)/bin/rumplestilzken_firstboot.sh \
+
 #Copy keyboard files into place.
 PRODUCT_COPY_FILES += \
     $(RESOURCE_PATH)/keyboard/gargoyle_pocket/system_usr_idc/aw9523-key.idc:$(TARGET_COPY_OUT_SYSTEM)/usr/idc/aw9523-key.idc \
