@@ -7,7 +7,7 @@ if $rumplestilzken_settings_enabled == true; then
 fi
 
 $(echo "writing rumplestilzken.settings" > /dev/kmsg)
-settings put global persist.restricted_networking_mode 0
+settings put global restricted_networking_mode 0
 settings put system screen_off_timeout 600000
 settings put system display_density_forced 320
 settings put system navigation_mode 2
