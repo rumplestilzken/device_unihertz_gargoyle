@@ -4,7 +4,7 @@
 # Imported from TWRP Recovery Partition Configuration
 #TWRP_EVENT_LOGGING := true
 
-BOARD_USES_RECOVERY_AS_BOOT := true
+#BOARD_USES_RECOVERY_AS_BOOT := true
 # BOARD_INCLUDE_RECOVERY_DTBO := true
 
 # Uniherz Titan options
@@ -42,13 +42,13 @@ TARGET_KERNEL_CLANG_COMPILE = false
 TARGET_KERNEL_USE_CLANG = false
 TARGET_KERNEL_SOURCE := kernel/unihertz/gargoyle
 BOARD_BOOTIMG_HEADER_VERSION := 2
-TARGET_KERNEL_CONFIG := titan_ufs_defconfig
+TARGET_KERNEL_CONFIG := titan_emmc_defconfig
 #TARGET_NO_KERNEL := false
 #TARGET_NO_KERNEL_OVERRIDE := false
 KERNEL_ARCH := arm64
 BOARD_KERNEL_IMAGE_NAME = Image.gz
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
-BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 buildvariant=user androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 buildvariant=user
 BOARD_KERNEL_BASE := 1409285888
 BOARD_KERNEL_OFFSET := 3959947520
 BOARD_RAMDISK_OFFSET := 16777472
