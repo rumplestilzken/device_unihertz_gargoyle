@@ -1,0 +1,5 @@
+type rumplestilzken, domain;
+type rumplestilzken_exec, exec_type, file_type
+
+init_daemon_domain(rumplestilzken)
+domain_auto_trans(init, shell_exec, rumplestilzken)

@@ -16,8 +16,6 @@ $(call inherit-product, device/unihertz/common.mk)
 
 RESOURCE_PATH := device/unihertz/gargoyle/
 
-#SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += device/unihertz/gargoyle/sepolicy
-
 #Init Scripts
 PRODUCT_COPY_FILES += \
 	$(RESOURCE_PATH)/rumplestilzken_firstboot.sh:$(TARGET_COPY_OUT_SYSTEM)/bin/rumplestilzken_firstboot.sh \

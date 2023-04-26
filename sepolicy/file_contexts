@@ -1,0 +1,2 @@
+/system/bin/uinput-titan  u:r:rumplestilzken:s0
+/system/bin/rumplestilzken_firstboot.sh u:r:rumplestilzken:s0
