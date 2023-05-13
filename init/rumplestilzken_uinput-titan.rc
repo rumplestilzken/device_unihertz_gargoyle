@@ -2,9 +2,8 @@ service uinput_titan /system/bin/uinput-titan
     class main
     group root system
     user root
-    seclabel u:r:rumplestilzken:s0
+    seclabel u:r:su:s0
     enabled
 
-on boot
-    start uinput_titan
+
 

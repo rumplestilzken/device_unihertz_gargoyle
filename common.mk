@@ -1,6 +1,6 @@
 RESOURCE_PATH := device/unihertz/
 
-BOARD_VENDOR_SEPOLICY_DIRS += device/unihertz/sepolicy
+#BOARD_VENDOR_SEPOLICY_DIRS += device/unihertz/sepolicy
 
 #Init Scripts
 PRODUCT_COPY_FILES += \
@@ -10,6 +10,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
 	$(RESOURCE_PATH)/prebuilt/uinput-titan:$(TARGET_COPY_OUT_SYSTEM)/bin/uinput-titan \
 
-PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-    persist.restricted_networking_mode=0 \
-    persist.rumplestilzken.settings=true \
+#PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
+#    persist.restricted_networking_mode=0 \
+#    persist.rumplestilzken.settings=true \
