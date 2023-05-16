@@ -1,0 +1,6 @@
+android_app_import {
+    name: "gargoyleSettings",
+    apk: "gargoyleSettings.apk",
+    privileged: true,
+    presigned: false,
+}

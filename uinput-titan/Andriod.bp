@@ -1,0 +1,5 @@
+cc_binary {
+    name: "uinput-titan",
+    srcs: ["uinput-titan.c"],
+    stl: "",
+}
