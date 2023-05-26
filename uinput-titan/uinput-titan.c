@@ -97,11 +97,11 @@ static int uinput_init() {
                     .value = 0,
                     .minimum = 0,
                     //.maximum = 1440,
-                    .maximum = screen_height,
+                    .maximum = screen_height-200,
                     .fuzz = 0,
                     .flat = 0,
                     //.resolution = 1440,
-                    .resolution = screen_height,
+                    .resolution = screen_height-200,
                     },
     };
     ioctl(fd, UI_ABS_SETUP, abs_setup_y);
@@ -470,6 +470,9 @@ static int latest_y = -1;
 static float y_multiplier = 1;
 // TODO: pick a proper multiplier. best so far is 1.7 for y
 static float x_multiplier = 1;
+static bool isSwipeActivated = false;
+static bool isSwipeLeftActivated = false;
+static bool isSwipeRightActivated = false;
 
 
 static void buffer(struct input_event e){
@@ -519,6 +522,108 @@ static void act(int ufd, int correct_x){
     return;
 }
 
+static bool isSwipeLeft() {
+   LOGI("Checking Swipe Left");
+
+   char buf[100];
+   int x_buf[10];
+   int x = 0;
+   for(int i = 0; i < buffer_index-1; i++)
+   {
+     struct input_event e = input_event_buffer[i];
+     if(e.code == ABS_MT_POSITION_X)
+     {
+        snprintf(buf, 100, "ieb:%d", e.value);
+        LOGI(buf);
+        x_buf[x] = e.value;
+        x++;
+     }
+   }
+
+   int x_buf2[10];
+   for(int i = 0; i < 10; i++) {
+        x_buf2[i] = x_buf[10-i];
+   }
+
+   int current_xbuf = 0;
+   for(int i = 0; i < 10; i++)
+   {
+        if(current_xbuf == 0)
+        {
+            current_xbuf = x_buf2[i];
+        }
+
+        if(x_buf2[i] == 0)
+        {
+            continue;
+        }
+
+        snprintf(buf, 100, "ieb2:%d", x_buf2[i]);
+        LOGI(buf);
+
+        if(current_xbuf > 0 && current_xbuf < x_buf2[i])
+        {
+            LOGI("Swipe Left Occurred");
+            return true;
+        }
+
+        current_xbuf = x_buf2[i];
+   }
+
+   return false;
+}
+
+static bool isSwipeRight() {
+       LOGI("Checking Swipe Right");
+
+       char buf[100];
+       int x_buf[10];
+       int x = 0;
+       for(int i = 0; i < buffer_index-1; i++)
+       {
+         struct input_event e = input_event_buffer[i];
+         if(e.code == ABS_MT_POSITION_X)
+         {
+            snprintf(buf, 100, "ieb:%d", e.value);
+            LOGI(buf);
+            x_buf[x] = e.value;
+            x++;
+         }
+       }
+
+       int current_xbuf = 0;
+       for(int i = 0; i < 10; i++)
+       {
+           if(current_xbuf == 0)
+           {
+               current_xbuf = x_buf[i];
+           }
+
+           if(x_buf[i] == 0)
+           {
+               continue;
+           }
+            snprintf(buf, 100, "ieb2:%d", x_buf[i]);
+            LOGI(buf);
+
+            if(current_xbuf > x_buf[i])
+            {
+                LOGI("Swipe Right Occurred");
+                return true;
+            }
+
+            current_xbuf = x_buf[i];
+       }
+
+       return false;
+}
+
+static bool isSwipe(){
+      return isSwipeActivated;
+}
+
+
+
 static void decide(int ufd){
     uint64_t d = now() - lastKbdTimestamp;
     int y_threshold = 30 * y_multiplier;
@@ -533,7 +638,27 @@ static void decide(int ufd){
         return;
     }
 
-    // TODO: arrow key mode?
+   // TODO: arrow key mode?
+/*
+   if(isSwipeActivated) {
+        LOGI("isSwipeActivated:true");
+        if(isSwipeLeft()){
+            LOGI("Injecting Swipe Left");
+            injectKeyDown(ufd, KEY_LEFTSHIFT);
+            injectKey(ufd, KEY_LEFT);
+            injectKeyUp(ufd, KEY_LEFTSHIFT);
+            //reset();
+        }
+        else if(isSwipeRight()){
+            LOGI("Injecting Swipe Right");
+            injectKeyDown(ufd, KEY_LEFTSHIFT);
+            injectKey(ufd, KEY_RIGHT);
+            injectKeyUp(ufd, KEY_LEFTSHIFT);
+            //reset();
+        }
+        return;
+    }
+    */
 
     if( (abs(first_y - latest_y) > y_threshold) || (abs(first_x - latest_x) > x_threshold)){
         LOGI("decide: acting\n");
@@ -577,23 +702,90 @@ static void handle(int ufd, struct input_event e){
                 finalize(ufd);
                 reset();
             }
+            /*
+            else if (isSwipeActivated) {
+                if(latest_x < screen_width/2)
+                {
+                    injectKeyDown(ufd, KEY_LEFTSHIFT);
+                    injectKey(ufd, KEY_LEFT);
+                    injectKeyUp(ufd, KEY_LEFTSHIFT);
+                }
+                else
+                {
+                    injectKeyDown(ufd, KEY_LEFTSHIFT);
+                    injectKey(ufd, KEY_RIGHT);
+                    injectKeyUp(ufd, KEY_LEFTSHIFT);
+                }
+            }*/
             else{
+                buffer(e);
                 LOGI("BTN_TOUCH UP: resetting\n");
                 if(was_tapped){
                     LOGI("entered was_tapped");
-                    if( (now() - lastKbdTimestamp) > 1000*1000LL &&  (now() - last_single_tap_time) < 500*1000LL ){
+                    uint64_t d1 = now() - lastKbdTimestamp;
+                    uint64_t d2 = now() - last_single_tap_time;
+                    bool isD1 = d1 > 100*1000LL;
+                    bool isD2 = d2 < 1300*1000LL;
+                    char buf[100];
+                    char buf2[100];
+                    char buf3[100];
+                    char buf4[100];
+                    snprintf(buf, 100, "d1:%d", d1);
+                    snprintf(buf2, 100, "d2:%d", d2);
+                    LOGI(buf);
+                    LOGI(buf2);
+                    if(isD1) {
+                        LOGI("isD1:true");
+                    }
+                    else
+                    {
+                        LOGI("isD1:false");
+                    }
+
+                    if(isD2) {
+                        LOGI("isD2:true");
+                    }
+                    else
+                    {
+                        LOGI("isD2:false");
+                    }
+
+                    if(isD1 && isD2) {
                         LOGI("double tap time check passed");
-                        if(isInRect(tap_x, tap_y, 1200, 1224, 600, 800)) {
+                        //if(isInRect(tap_x, tap_y, 1200, 1224, 600, 800)) {
+                        char buf5[100];
+                        char buf6[100];
+                        snprintf(buf, 100, "tap_x:%d", tap_x);
+                        snprintf(buf2, 100, "tap_y:%d", tap_y);
+                        snprintf(buf3, 100, "top:%d", latest_y+180);
+                        snprintf(buf4, 100, "bottom:%d", latest_y-180);
+                        snprintf(buf5, 100, "left:%d", latest_x-180);
+                        snprintf(buf6, 100, "right:%d", latest_x+180);
+                        LOGI(buf);
+                        LOGI(buf2);
+                        LOGI(buf3);
+                        LOGI(buf4);
+                        LOGI(buf5);
+                        LOGI(buf6);
+                        if(isInRect(tap_x, tap_y, latest_y-180, latest_y+180, latest_x - 180, latest_x + 180)) {
                             LOGI("double tap first rect passed");
+                            if(isSwipeActivated) {
+                                isSwipeActivated = false;
+                            }
+                            else {
+                                isSwipeActivated = true;
+                            }
+                            /*
                             if(isInRect(latest_x, latest_y, 1200, 1224, 600, 800)) {
                                 LOGI("Double tap on space key\n");
                                 injectKey(ufd, KEY_TAB);
                             }
-
+                            */
                         }
                         was_tapped = 0;
                         LOGI("setting was_tapped = 0");
                     }
+                    last_single_tap_time = now();
                 }
                 else{
                     LOGI("setting was_tapped = 1");
@@ -604,6 +796,7 @@ static void handle(int ufd, struct input_event e){
                 }
 
                 reset();
+
             }
         }
         else if(e.type == EV_ABS && e.code == ABS_MT_POSITION_X) {
@@ -636,7 +829,7 @@ static void handle(int ufd, struct input_event e){
             LOGI("SYN seen, deciding\n");
             decide(ufd);
         }
-        else{
+        else {
             //we have started a touch, but haven't decided to act yet.
             //save so we can replay if we decide to act
             buffer(e);
@@ -721,123 +914,6 @@ void *keyboard_monitor(void* ptr) {
                     __android_log_print(ANDROID_LOG_INFO, "UINPUT-TITAN-KB-MON-THREAD", "alt_toggle = %d, alt_lock = %d\n", alt_toggle, alt_lock);
                     __android_log_print(ANDROID_LOG_INFO, "UINPUT-TITAN-KB-MON-THREAD", "shift_toggle = %d, shift_lock = %d\n", shift_toggle, shift_lock);
                 }
-
-                else if(kbe.code == KEY_H){
-                    // must tell the main keyboard fd that h was release before it will let us send H on the ufd
-                    injectKeyUp(fd, KEY_H);
-                    if((shift_toggle || shift_lock) && (alt_toggle || alt_lock)){
-                        injectKey(ufd, KEY_LEFT);
-                        if(shift_toggle && alt_toggle){
-                            shift_toggle = 0;
-                            alt_toggle = 0;
-                        }
-                    }
-                    else if(shift_toggle || shift_lock){
-                        injectKeyDown(ufd, KEY_LEFTSHIFT);
-                        injectKey(ufd, KEY_H);
-                        injectKeyUp(ufd, KEY_LEFTSHIFT);
-                        if(shift_toggle){
-                            shift_toggle = 0;
-                        }
-                    }
-                    else if(alt_toggle || alt_lock){
-                        injectKey(ufd, KEY_NUMERIC_POUND);
-                        if(alt_toggle){
-                            alt_toggle = 0;
-                        }
-                    }
-                    else{
-                        injectKey(ufd, KEY_H);
-                    }
-
-                }
-                else if(kbe.code == KEY_J){
-                    // must tell the main keyboard fd that j was release before it will let us send H on the ufd
-                    injectKeyUp(fd, KEY_J);
-                    if((shift_toggle || shift_lock) && (alt_toggle || alt_lock)){
-                        injectKey(ufd, KEY_DOWN);
-                        if(shift_toggle && alt_toggle){
-                            shift_toggle = 0;
-                            alt_toggle = 0;
-                        }
-                    }
-                    else if(shift_toggle || shift_lock){
-                        injectKeyDown(ufd, KEY_LEFTSHIFT);
-                        injectKey(ufd, KEY_J);
-                        injectKeyUp(ufd, KEY_LEFTSHIFT);
-                        if(shift_toggle){
-                            shift_toggle = 0;
-                        }
-                    }
-                    else if(alt_toggle || alt_lock){
-                        injectKey(ufd, KEY_4);
-                        if(alt_toggle){
-                            alt_toggle = 0;
-                        }
-                    }
-                    else{
-                        injectKey(ufd, KEY_J);
-                    }
-
-                }
-                else if(kbe.code == KEY_K){
-                    // must tell the main keyboard fd that k was release before it will let us send H on the ufd
-                    injectKeyUp(fd, KEY_K);
-                    if((shift_toggle || shift_lock) && (alt_toggle || alt_lock)){
-                        injectKey(ufd, KEY_UP);
-                        if(shift_toggle && alt_toggle){
-                            shift_toggle = 0;
-                            alt_toggle = 0;
-                        }
-                    }
-                    else if(shift_toggle || shift_lock){
-                        injectKeyDown(ufd, KEY_LEFTSHIFT);
-                        injectKey(ufd, KEY_K);
-                        injectKeyUp(ufd, KEY_LEFTSHIFT);
-                        if(shift_toggle){
-                            shift_toggle = 0;
-                        }
-                    }
-                    else if(alt_toggle || alt_lock){
-                        injectKey(ufd, KEY_5);
-                        if(alt_toggle){
-                            alt_toggle = 0;
-                        }
-                    }
-                    else{
-                        injectKey(ufd, KEY_K);
-                    }
-
-                }
-                else if(kbe.code == KEY_L){
-                    // must tell the main keyboard fd that l was release before it will let us send H on the ufd
-                    injectKeyUp(fd, KEY_L);
-                    if((shift_toggle || shift_lock) && (alt_toggle || alt_lock)){
-                        injectKey(ufd, KEY_RIGHT);
-                        if(shift_toggle && alt_toggle){
-                            shift_toggle = 0;
-                            alt_toggle = 0;
-                        }
-                    }
-                    else if(shift_toggle || shift_lock){
-                        injectKeyDown(ufd, KEY_LEFTSHIFT);
-                        injectKey(ufd, KEY_L);
-                        injectKeyUp(ufd, KEY_LEFTSHIFT);
-                        if(shift_toggle){
-                            shift_toggle = 0;
-                        }
-                    }
-                    else if(alt_toggle || alt_lock){
-                        injectKey(ufd, KEY_6);
-                        if(alt_toggle){
-                            alt_toggle = 0;
-                        }
-                    }
-                    else{
-                        injectKey(ufd, KEY_L);
-                    }
-
-                }
                 else{
                     if(shift_toggle){
                         shift_toggle = 0;
@@ -847,7 +923,7 @@ void *keyboard_monitor(void* ptr) {
                     }
                     __android_log_print(ANDROID_LOG_INFO, "UINPUT-TITAN-KB-MON-THREAD", "shift_toggle = %d, alt_toggle = %d\n", shift_toggle, alt_toggle);
                 }
-            }
+            }/*
             // for holds we want to act on key up
             else if(kbe.type == EV_KEY && kbe.value == 0){
                 test_time = now() - last_saw_function;
@@ -873,7 +949,7 @@ void *keyboard_monitor(void* ptr) {
                     saw_function = 0;
                 }
 
-            }
+            }*/
         }
     }
     __android_log_print(ANDROID_LOG_INFO, "UINPUT-TITAN-KB-MON-THREAD", "error, returning\n");
