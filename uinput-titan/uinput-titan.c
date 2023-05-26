@@ -494,19 +494,33 @@ static void reset(){
 }
 
 static void replay_buffer(int ufd, int correct_x){
+    int last_value = 0;
+    struct ieb = NULL;
     if (correct_x){
         for(int i = 0; i < buffer_index; i++){
             if(input_event_buffer[i].type == EV_ABS && input_event_buffer[i].code == ABS_MT_POSITION_X){
                 input_event_buffer[i].value = first_x;
             }
             write(ufd, &input_event_buffer[i], sizeof(input_event_buffer[i]));
+            last_value = input_event_buffer[i].value;
+            ieb = input_event_buffer[i];
         }
     }
     else{
         for(int i = 0; i < buffer_index; i++){
             write(ufd, &input_event_buffer[i], sizeof(input_event_buffer[i]));
+            last_value = input_event_buffer[i].value;
+            ieb = input_event_buffer[i];
         }
     }
+
+    //Give several events after swipe ends to smooth experience
+    for(int i = 0; i < 5; i++) {
+        ieb.value = last_value - i;
+        write(ufd, &input_event_buffer[i], sizeof(input_event_buffer[i]));
+        last_value = ieb.value;
+    }
+
     buffer_index = 0;
     return;
 }
