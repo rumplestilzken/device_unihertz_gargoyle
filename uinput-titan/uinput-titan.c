@@ -97,11 +97,11 @@ static int uinput_init() {
                     .value = 0,
                     .minimum = 0,
                     //.maximum = 1440,
-                    .maximum = screen_height-200,
+                    .maximum = screen_height,
                     .fuzz = 0,
                     .flat = 0,
                     //.resolution = 1440,
-                    .resolution = screen_height-200,
+                    .resolution = screen_height,
                     },
     };
     ioctl(fd, UI_ABS_SETUP, abs_setup_y);
@@ -495,11 +495,18 @@ static void reset(){
 
 static void replay_buffer(int ufd, int correct_x){
     int last_value = 0;
-    struct ieb = NULL;
+    struct input_event ieb;
+    int values[2];
+    int valuesCount = 0;
     if (correct_x){
         for(int i = 0; i < buffer_index; i++){
             if(input_event_buffer[i].type == EV_ABS && input_event_buffer[i].code == ABS_MT_POSITION_X){
                 input_event_buffer[i].value = first_x;
+            }
+            if(input_event_buffer[i].type == EV_ABS && input_event_buffer[i].code == ABS_MT_POSITION_Y){
+                if(valuesCount < 2)
+                    values[valuesCount] = input_event_buffer[i].value;
+                valuesCount++;
             }
             write(ufd, &input_event_buffer[i], sizeof(input_event_buffer[i]));
             last_value = input_event_buffer[i].value;
@@ -508,19 +515,31 @@ static void replay_buffer(int ufd, int correct_x){
     }
     else{
         for(int i = 0; i < buffer_index; i++){
+            if(input_event_buffer[i].type == EV_ABS && input_event_buffer[i].code == ABS_MT_POSITION_Y){
+                if(valuesCount < 2)
+                    values[valuesCount] = input_event_buffer[i].value;
+                valuesCount++;
+            }
             write(ufd, &input_event_buffer[i], sizeof(input_event_buffer[i]));
             last_value = input_event_buffer[i].value;
             ieb = input_event_buffer[i];
         }
     }
-
+/*
     //Give several events after swipe ends to smooth experience
-    for(int i = 0; i < 5; i++) {
-        ieb.value = last_value - i;
-        write(ufd, &input_event_buffer[i], sizeof(input_event_buffer[i]));
+    for(int i = 0; i < 50; i++) {
+        if(values[0] > values[1])
+        {
+            ieb.value = last_value + 10;
+        }
+        else
+        {
+            ieb.value = last_value - 10;
+        }
+        write(ufd, &ieb, sizeof(ieb));
         last_value = ieb.value;
     }
-
+*/
     buffer_index = 0;
     return;
 }
