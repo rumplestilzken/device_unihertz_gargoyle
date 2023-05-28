@@ -32,6 +32,6 @@ settings put secure show_ime_with_hard_keyboard 1
 settings put global persist.rumplestilzken.settings true
 
 #Kika
-#pm enable com.iqqijni.bbkeyboard
-#ime enable com.iqqijni.bbkeyboard/.keyboard_service.view.HDKeyboardService
-#ime set com.iqqijni.bbkeyboard/.keyboard_service.view.HDKeyboardService
+pm enable com.iqqijni.bbkeyboard
+ime enable com.iqqijni.bbkeyboard/.keyboard_service.view.HDKeyboardService
+ime set com.iqqijni.bbkeyboard/.keyboard_service.view.HDKeyboardService
