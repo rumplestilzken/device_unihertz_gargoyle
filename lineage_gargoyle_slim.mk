@@ -23,6 +23,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
 	$(RESOURCE_PATH)/excluded-input-devices.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/excluded-input-devices.xml \
 
+PRODUCT_COPY_FILES += \
+	$(RESOURCE_PATH)/bootanimation.zip:$(TARGET_COPY_OUT_SYSTEM)/product/bootanimation.zip \
+	$(RESOURCE_PATH)/bootanimation.zip:$(TARGET_COPY_OUT_SYSTEM)/product/bootanimation-dark.zip
+
 #Copy keyboard files into place.
 PRODUCT_COPY_FILES += \
   $(RESOURCE_PATH)/keyboard/system_usr_idc/aw9523-key.idc:$(TARGET_COPY_OUT_SYSTEM)/usr/idc/aw9523-key.idc \
