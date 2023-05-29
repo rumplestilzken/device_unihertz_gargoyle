@@ -567,7 +567,7 @@ static bool isSwipeLeft() {
      if(e.code == ABS_MT_POSITION_X)
      {
         snprintf(buf, 100, "ieb:%d", e.value);
-        LOGI(buf);
+//        LOGI(buf);
         x_buf[x] = e.value;
         x++;
      }
@@ -592,7 +592,7 @@ static bool isSwipeLeft() {
         }
 
         snprintf(buf, 100, "ieb2:%d", x_buf2[i]);
-        LOGI(buf);
+//        LOGI(buf);
 
         if(current_xbuf > 0 && current_xbuf < x_buf2[i])
         {
@@ -618,7 +618,7 @@ static bool isSwipeRight() {
          if(e.code == ABS_MT_POSITION_X)
          {
             snprintf(buf, 100, "ieb:%d", e.value);
-            LOGI(buf);
+//            LOGI(buf);
             x_buf[x] = e.value;
             x++;
          }
@@ -637,7 +637,7 @@ static bool isSwipeRight() {
                continue;
            }
             snprintf(buf, 100, "ieb2:%d", x_buf[i]);
-            LOGI(buf);
+//            LOGI(buf);
 
             if(current_xbuf > x_buf[i])
             {
@@ -765,8 +765,8 @@ static void handle(int ufd, struct input_event e){
                     char buf4[100];
                     snprintf(buf, 100, "d1:%d", d1);
                     snprintf(buf2, 100, "d2:%d", d2);
-                    LOGI(buf);
-                    LOGI(buf2);
+//                    LOGI(buf);
+//                    LOGI(buf2);
                     if(isD1) {
                         LOGI("isD1:true");
                     }
@@ -794,12 +794,12 @@ static void handle(int ufd, struct input_event e){
                         snprintf(buf4, 100, "bottom:%d", latest_y-180);
                         snprintf(buf5, 100, "left:%d", latest_x-180);
                         snprintf(buf6, 100, "right:%d", latest_x+180);
-                        LOGI(buf);
-                        LOGI(buf2);
-                        LOGI(buf3);
-                        LOGI(buf4);
-                        LOGI(buf5);
-                        LOGI(buf6);
+//                        LOGI(buf);
+//                        LOGI(buf2);
+//                        LOGI(buf3);
+//                        LOGI(buf4);
+//                        LOGI(buf5);
+//                        LOGI(buf6);
                         if(isInRect(tap_x, tap_y, latest_y-180, latest_y+180, latest_x - 180, latest_x + 180)) {
                             LOGI("double tap first rect passed");
                             if(isSwipeActivated) {
@@ -1015,7 +1015,7 @@ bool parseScreenDimensionInformation(){
     pclose(fp);
 
     //Log Output
-    LOGI(output);
+//    LOGI(output);
 
     //Copy for manipulation
     strcpy(output2, output);
