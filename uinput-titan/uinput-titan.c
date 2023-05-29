@@ -1044,7 +1044,7 @@ bool parseScreenDimensionInformation(){
     }
 
     //Parse Dimensions into screen_width and screen_height
-    char width[5], height[5];
+    char width[10], height[10];
     int count = 0;
     char* ptr = strtok(sub, "x");
     do{
