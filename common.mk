@@ -61,7 +61,8 @@ PRODUCT_BROKEN_VERIFY_USES_LIBRARIES := true
 PRODUCT_PACKAGES += \
     uinput-titan \
     gargoyleSettings \
-    Kika-Input \ 
+    Kika-Input \
+    OpenCamera \
 
 #PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
 #    persist.restricted_networking_mode=0 \
