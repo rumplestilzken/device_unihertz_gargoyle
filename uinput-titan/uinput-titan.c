@@ -1095,6 +1095,14 @@ device_type getDeviceType() {
     return device;
 }
 
+void prepareDevice(device_type dev) {
+
+    if(dev == SLIM) {
+        y_multiplier = 1.7;
+    }
+
+}
+
 int main() {
     LOGI("start\n");
 
@@ -1113,6 +1121,7 @@ int main() {
     }
 
     dev = device;
+    prepareDevice(dev);
 
     int ufd = uinput_init();
     int origfd = original_input_init();
