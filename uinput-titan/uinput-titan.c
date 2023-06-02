@@ -697,7 +697,7 @@ static void decide(int ufd){
         LOGI("decide: acting\n");
 
         // TODO: correct y values to avoid activating the notification panel. this goes along with picking a proper multiplier. Also might need to do the same to avoid activating the switcher?
-        act(ufd, 0);
+        act(ufd, latest_x);
         sent_events = 1;
     }
     return;
@@ -1098,7 +1098,7 @@ device_type getDeviceType() {
 void prepareDevice(device_type dev) {
 
     if(dev == SLIM) {
-        y_multiplier = 1.7;
+        y_multiplier = 2.5;
     }
 
 }
