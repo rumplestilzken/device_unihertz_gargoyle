@@ -18,6 +18,14 @@ settings put system persist.radio.data_ltd_sys_ind 1
 settings put system persist.radio.data_con_rprt 1
 settings put system persist.radio.calls.on.ims 1
 
+# Mediatek bluetooth
+settings put system persist.sys.bt.unsupport.features 00000000
+settings put system persist.sys.bt.unsupport.states 00000000
+settings put system persist.sys.bt.unsupport.stdfeatures 000001
+
+# System Wide HAL Support
+settings put system persist.sys.phh.disable_a2dp_offload 1
+
 #Headphone jack
 setprop persist.sys.overlay.devinputjack true
 
