@@ -213,6 +213,7 @@ static int uinput_init() {
     ioctl(fd, UI_SET_KEYBIT, KEY_4);
     ioctl(fd, UI_SET_KEYBIT, KEY_5);
     ioctl(fd, UI_SET_KEYBIT, KEY_6);
+    ioctl(fd, UI_SET_KEYBIT, KEY_ENTER);
 
     // lets us behave as a touchscreen. Inputs are directly mapped onto display
     ioctl(fd, UI_SET_PROPBIT, INPUT_PROP_DIRECT);
@@ -715,6 +716,7 @@ int was_tapped = 0;
 int tap_x = 0;
 int tap_y = 0;
 static int64_t last_single_tap_time = 0;
+static int64_t last_double_tap_time = 0;
 // a touch starts with BTN_TOUCH DOWN. Store first x/y here
 // store and act on every SYN
 // when we see a difference > 60 start piping stored, and future syns until BTN_TOUCH UP
@@ -728,6 +730,18 @@ static void handle(int ufd, struct input_event e){
     }
     else if(touched){
         if(e.type == EV_KEY && e.code == BTN_TOUCH && e.value == 0){
+
+            if (isSwipeActivated) {
+                if(latest_x < screen_width/2)
+                {
+                    injectKey(ufd, KEY_LEFT);
+                }
+                else
+                {
+                    injectKey(ufd, KEY_RIGHT);
+                }
+            }
+
             if (sent_events){
                 LOGI("BTN_TOUCH UP: sent events\n");
                 buffer(e);
@@ -735,21 +749,6 @@ static void handle(int ufd, struct input_event e){
                 finalize(ufd);
                 reset();
             }
-            /*
-            else if (isSwipeActivated) {
-                if(latest_x < screen_width/2)
-                {
-                    injectKeyDown(ufd, KEY_LEFTSHIFT);
-                    injectKey(ufd, KEY_LEFT);
-                    injectKeyUp(ufd, KEY_LEFTSHIFT);
-                }
-                else
-                {
-                    injectKeyDown(ufd, KEY_LEFTSHIFT);
-                    injectKey(ufd, KEY_RIGHT);
-                    injectKeyUp(ufd, KEY_LEFTSHIFT);
-                }
-            }*/
             else{
                 buffer(e);
                 LOGI("BTN_TOUCH UP: resetting\n");
@@ -800,14 +799,10 @@ static void handle(int ufd, struct input_event e){
 //                        LOGI(buf4);
 //                        LOGI(buf5);
 //                        LOGI(buf6);
+
                         if(isInRect(tap_x, tap_y, latest_y-180, latest_y+180, latest_x - 180, latest_x + 180)) {
                             LOGI("double tap first rect passed");
-                            if(isSwipeActivated) {
-                                isSwipeActivated = false;
-                            }
-                            else {
                                 isSwipeActivated = true;
-                            }
                             /*
                             if(isInRect(latest_x, latest_y, 1200, 1224, 600, 800)) {
                                 LOGI("Double tap on space key\n");
@@ -815,6 +810,7 @@ static void handle(int ufd, struct input_event e){
                             }
                             */
                         }
+
                         was_tapped = 0;
                         LOGI("setting was_tapped = 0");
                     }
@@ -946,6 +942,9 @@ void *keyboard_monitor(void* ptr) {
                     }
                     __android_log_print(ANDROID_LOG_INFO, "UINPUT-TITAN-KB-MON-THREAD", "alt_toggle = %d, alt_lock = %d\n", alt_toggle, alt_lock);
                     __android_log_print(ANDROID_LOG_INFO, "UINPUT-TITAN-KB-MON-THREAD", "shift_toggle = %d, shift_lock = %d\n", shift_toggle, shift_lock);
+                }
+                else if (kbe.code == KEY_ENTER) {
+                    isSwipeActivated = false;
                 }
                 else{
                     if(shift_toggle){

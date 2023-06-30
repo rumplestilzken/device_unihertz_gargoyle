@@ -45,6 +45,6 @@ PRODUCT_COPY_FILES += \
 	$(RESOURCE_PATH)/keyboard/system_usr_keylayout/qwerty.kl:$(TARGET_COPY_OUT_SYSTEM)/usr/keylayout/qwerty.kl \
 	$(RESOURCE_PATH)/keyboard/system_usr_keylayout/mtk-kpd.kl:$(TARGET_COPY_OUT_SYSTEM)/usr/keylayout/mtk-kpd.kl
 	
-#Install Kika as system app
-#PRODUCT_PACKAGES += \
-#	Kika-Keyboard_com.iqqijni.bbkeyboard \
+#IMS
+PRODUCT_PACKAGES += \
+    MTK-IMS-R
