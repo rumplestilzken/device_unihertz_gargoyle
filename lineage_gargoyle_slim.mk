@@ -47,4 +47,5 @@ PRODUCT_COPY_FILES += \
 	
 #IMS
 PRODUCT_PACKAGES += \
-    MTK-IMS-R
+    MTK-IMS-R \
+    treble-app \

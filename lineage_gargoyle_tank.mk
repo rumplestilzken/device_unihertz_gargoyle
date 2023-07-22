@@ -7,12 +7,12 @@ $(call inherit-product, device/unihertz/common.mk)
 #PRODUCT_RELEASE_NAME := Titan
 
 # Device identifier. This must come after all inclusions
-#PRODUCT_DEVICE = gargoyle
+#PRODUCT_DEVICE = gargoyle_tank
 #PRODUCT_BRAND = Unihertz
 #PRODUCT_SYSTEM_BRAND = Unihertz
-#PRODUCT_MANUFACTURER = A-gold
-#PRODUCT_NAME = Titan
-#PRODUCT_MODEL = Titan
+#PRODUCT_MANUFACTURER = Unihertz
+#PRODUCT_NAME = TANK 01
+#PRODUCT_MODEL = TANK_01
 
 RESOURCE_PATH := device/unihertz/gargoyle_tank
 
@@ -20,6 +20,6 @@ RESOURCE_PATH := device/unihertz/gargoyle_tank
 PRODUCT_COPY_FILES += \
 	$(RESOURCE_PATH)/rumplestilzken_firstboot.sh:$(TARGET_COPY_OUT_SYSTEM)/bin/rumplestilzken_firstboot.sh \
 
-#Install Kika as system app
-#PRODUCT_PACKAGES += \
-#	Kika-Keyboard_com.iqqijni.bbkeyboard \
+#bootanimation
+TARGET_BOOTANIMATION := $(RESOURCE_PATH)/bootanimation.zip
+
