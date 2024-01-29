@@ -38,4 +38,5 @@ PRODUCT_COPY_FILES += \
 
 #IMS
 PRODUCT_PACKAGES += \
-    MTK-IMS-Q
+    MTK-IMS-Q \
+	KeyMapper

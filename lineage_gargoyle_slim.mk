@@ -49,3 +49,4 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     MTK-IMS-R \
     treble-app \
+	KeyMapper \
