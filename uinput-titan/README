@@ -1,0 +1,4 @@
+Run Command Similar to this.
+
+/home/nick/dev/Android/Sdk/ndk/25.2.9519653/ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk
+

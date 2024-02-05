@@ -5,7 +5,7 @@ LOCAL_MODULE := uinput-titan
 LOCAL_MODULE_HOST_OS := linux
 
 LOCAL_CPPFLAGS := -Wall -Wextra -Wl
-LOCAL_STATIC_LIBRARIES:= liblog 
+LOCAL_LDLIBS := -llog
 
 LOCAL_SRC_FILES := uinput-titan.c
 
