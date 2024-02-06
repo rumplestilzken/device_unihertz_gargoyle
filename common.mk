@@ -66,6 +66,5 @@ PRODUCT_PACKAGES += \
     Kika-Input \
     OpenCamera \
 
-#PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-#    persist.restricted_networking_mode=0 \
-#    persist.rumplestilzken.settings=true \
+PRODUCT_SYSTEM_PROPERTIES += \
+    ro.system.ota.json_url="https://github.com/rumplestilzken/unihertz_titan_lineageos20/releases/download/ota/ota.json"
