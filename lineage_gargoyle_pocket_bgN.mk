@@ -7,4 +7,4 @@ PRODUCT_BRAND := Unihertz
 PRODUCT_SYSTEM_BRAND := Unihertz
 PRODUCT_MANUFACTURER := Unihertz
 PRODUCT_NAME := Titan Pocket
-PRODUCT_MODEL := Titan_Pocket
+PRODUCT_MODEL := Titan_pocket
