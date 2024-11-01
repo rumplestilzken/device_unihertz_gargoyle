@@ -369,7 +369,7 @@ int injectAbsEvent(int ufd, int x, int y, bool first){
     return 0;
 }
 
-int injectAbsFinal(ufd){
+int injectAbsFinal(int ufd){
     insertEvent(ufd, EV_KEY, BTN_TOUCH, 0 );
     insertEvent(ufd, EV_ABS, ABS_MT_TRACKING_ID, -1 );
     insertEvent(ufd, EV_SYN, SYN_MT_REPORT, 0 );
@@ -475,6 +475,9 @@ static bool isSwipeActivated = false;
 static bool isSwipeLeftActivated = false;
 static bool isSwipeRightActivated = false;
 
+// Add these state variables with the other static variables
+static bool isHorizontalScrollEnabled = true;
+static bool isVerticalScrollEnabled = true;
 
 static void buffer(struct input_event e){
     input_event_buffer[buffer_index] = e;
@@ -694,10 +697,9 @@ static void decide(int ufd){
     }
     */
 
-    if( (abs(first_y - latest_y) > y_threshold) || (abs(first_x - latest_x) > x_threshold)){
+    if( ((abs(first_y - latest_y) > y_threshold) && isVerticalScrollEnabled) || 
+        ((abs(first_x - latest_x) > x_threshold) && isHorizontalScrollEnabled)){
         LOGI("decide: acting\n");
-
-        // TODO: correct y values to avoid activating the notification panel. this goes along with picking a proper multiplier. Also might need to do the same to avoid activating the switcher?
         act(ufd, latest_x);
         sent_events = 1;
     }
@@ -762,8 +764,8 @@ static void handle(int ufd, struct input_event e){
                     char buf2[100];
                     char buf3[100];
                     char buf4[100];
-                    snprintf(buf, 100, "d1:%d", d1);
-                    snprintf(buf2, 100, "d2:%d", d2);
+                    snprintf(buf, 100, "d1:%lu", d1);
+                    snprintf(buf2, 100, "d2:%lu", d2);
 //                    LOGI(buf);
 //                    LOGI(buf2);
                     if(isD1) {
@@ -946,6 +948,20 @@ void *keyboard_monitor(void* ptr) {
                 else if (kbe.code == KEY_ENTER) {
                     isSwipeActivated = false;
                 }
+                else if (kbe.code == KEY_H) {  // H key toggles horizontal scroll
+                    if (saw_function) {
+                        isHorizontalScrollEnabled = !isHorizontalScrollEnabled;
+                        LOGI("Horizontal scrolling %s", isHorizontalScrollEnabled ? "enabled" : "disabled");
+                        saw_function = 0;
+                    }
+                }
+                else if (kbe.code == KEY_V) {  // V key toggles vertical scroll
+                    if (saw_function) {
+                        isVerticalScrollEnabled = !isVerticalScrollEnabled;
+                        LOGI("Vertical scrolling %s", isVerticalScrollEnabled ? "enabled" : "disabled");
+                        saw_function = 0;
+                    }
+                }
                 else{
                     if(shift_toggle){
                         shift_toggle = 0;
@@ -1060,7 +1076,7 @@ bool parseScreenDimensionInformation(){
         }
         count++;
     }
-    while(ptr = strtok(NULL, "x "));
+    while ((ptr = strtok(NULL, "x ")));
 
     //LOGI("'%s'", value);
     //LOGI("'%s'", sub);
