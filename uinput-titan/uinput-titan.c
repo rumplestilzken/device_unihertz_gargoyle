@@ -369,7 +369,7 @@ int injectAbsEvent(int ufd, int x, int y, bool first){
     return 0;
 }
 
-int injectAbsFinal(ufd){
+int injectAbsFinal(int ufd){
     insertEvent(ufd, EV_KEY, BTN_TOUCH, 0 );
     insertEvent(ufd, EV_ABS, ABS_MT_TRACKING_ID, -1 );
     insertEvent(ufd, EV_SYN, SYN_MT_REPORT, 0 );
@@ -764,8 +764,8 @@ static void handle(int ufd, struct input_event e){
                     char buf2[100];
                     char buf3[100];
                     char buf4[100];
-                    snprintf(buf, 100, "d1:%d", d1);
-                    snprintf(buf2, 100, "d2:%d", d2);
+                    snprintf(buf, 100, "d1:%lu", d1);
+                    snprintf(buf2, 100, "d2:%lu", d2);
 //                    LOGI(buf);
 //                    LOGI(buf2);
                     if(isD1) {
@@ -1076,7 +1076,7 @@ bool parseScreenDimensionInformation(){
         }
         count++;
     }
-    while(ptr = strtok(NULL, "x "));
+    while ((ptr = strtok(NULL, "x ")));
 
     //LOGI("'%s'", value);
     //LOGI("'%s'", sub);
