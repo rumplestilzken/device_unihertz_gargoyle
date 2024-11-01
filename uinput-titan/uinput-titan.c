@@ -475,6 +475,9 @@ static bool isSwipeActivated = false;
 static bool isSwipeLeftActivated = false;
 static bool isSwipeRightActivated = false;
 
+// Add these state variables with the other static variables
+static bool isHorizontalScrollEnabled = true;
+static bool isVerticalScrollEnabled = true;
 
 static void buffer(struct input_event e){
     input_event_buffer[buffer_index] = e;
@@ -694,10 +697,9 @@ static void decide(int ufd){
     }
     */
 
-    if( (abs(first_y - latest_y) > y_threshold) || (abs(first_x - latest_x) > x_threshold)){
+    if( ((abs(first_y - latest_y) > y_threshold) && isVerticalScrollEnabled) || 
+        ((abs(first_x - latest_x) > x_threshold) && isHorizontalScrollEnabled)){
         LOGI("decide: acting\n");
-
-        // TODO: correct y values to avoid activating the notification panel. this goes along with picking a proper multiplier. Also might need to do the same to avoid activating the switcher?
         act(ufd, latest_x);
         sent_events = 1;
     }
@@ -945,6 +947,20 @@ void *keyboard_monitor(void* ptr) {
                 }
                 else if (kbe.code == KEY_ENTER) {
                     isSwipeActivated = false;
+                }
+                else if (kbe.code == KEY_H) {  // H key toggles horizontal scroll
+                    if (saw_function) {
+                        isHorizontalScrollEnabled = !isHorizontalScrollEnabled;
+                        LOGI("Horizontal scrolling %s", isHorizontalScrollEnabled ? "enabled" : "disabled");
+                        saw_function = 0;
+                    }
+                }
+                else if (kbe.code == KEY_V) {  // V key toggles vertical scroll
+                    if (saw_function) {
+                        isVerticalScrollEnabled = !isVerticalScrollEnabled;
+                        LOGI("Vertical scrolling %s", isVerticalScrollEnabled ? "enabled" : "disabled");
+                        saw_function = 0;
+                    }
                 }
                 else{
                     if(shift_toggle){
