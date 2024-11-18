@@ -41,8 +41,6 @@ uint64_t now() {
     return t;
 }
 
-static uint64_t lastKbdTimestamp;
-
 typedef enum device_type {
     NOTSET,
     TITAN,
@@ -1166,8 +1164,14 @@ int main() {
         handle(ufd, e);
     }
 }
-
-JNIEXPORT void JNICALL JNIProvider::Java_com_rumplestilzken_gargoylesettings_provider_NativeProvider_setupNativeBindings(JNIEnv *env, jobject obj)
+#ifdef __cplusdplus
+extern "C" {
+#endif
+JNIEXPORT void JNICALL Java_com_rumplestilzken_gargoylesettings_provider_NativeProvider_setupNativeBindings(JNIEnv *env, jobject obj)
 {
-    return JNIEXPORT void JNICALL();
+    LOGE("JNI CALL SUCCESS");
+    return;
 }
+#ifdef __cplusplus
+}
+#endif

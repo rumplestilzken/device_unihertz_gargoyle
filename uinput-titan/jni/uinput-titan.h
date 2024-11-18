@@ -1,9 +1,13 @@
+#pragma once
+
 #include <jni.h>
 
-class JNIProvider {
-    public:
+#ifdef __cplusdplus
+extern "C" {
+#endif
     JNIEXPORT void JNICALL Java_com_rumplestilzken_gargoylesettings_provider_NativeProvider_setupNativeBindings(JNIEnv* env, jobject obj);
-
-    JNIEnv * e;
-    jobject jobj;
+#ifdef __cplusplus
 }
+#endif
+
+static uint64_t lastKbdTimestamp;
