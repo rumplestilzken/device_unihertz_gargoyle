@@ -1164,7 +1164,7 @@ int main() {
         handle(ufd, e);
     }
 }
-#ifdef __cplusdplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 JNIEXPORT void JNICALL Java_com_rumplestilzken_gargoylesettings_provider_NativeProvider_setupNativeBindings(JNIEnv *env, jobject obj)
