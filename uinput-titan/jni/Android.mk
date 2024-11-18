@@ -11,5 +11,5 @@ LOCAL_SRC_FILES := uinput-titan.c
 
 include $(BUILD_EXECUTABLE)
 
-clean: uinput-titan
+clean:
 	rm -rf libs obj
