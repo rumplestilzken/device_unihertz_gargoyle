@@ -15,6 +15,7 @@
 #include <sys/time.h>
 
 #include <jni.h>
+#include "uinput-titan.h"
 
 #define  LOG_TAG    "UINPUT-TITAN"
 
@@ -1166,4 +1167,7 @@ int main() {
     }
 }
 
-
+JNIEXPORT void JNICALL JNIProvider::Java_com_rumplestilzken_gargoylesettings_provider_NativeProvider_setupNativeBindings(JNIEnv *env, jobject obj)
+{
+    return JNIEXPORT void JNICALL();
+}
