@@ -369,7 +369,7 @@ int injectAbsEvent(int ufd, int x, int y, bool first){
     return 0;
 }
 
-int injectAbsFinal(ufd){
+int injectAbsFinal(int ufd){
     insertEvent(ufd, EV_KEY, BTN_TOUCH, 0 );
     insertEvent(ufd, EV_ABS, ABS_MT_TRACKING_ID, -1 );
     insertEvent(ufd, EV_SYN, SYN_MT_REPORT, 0 );
