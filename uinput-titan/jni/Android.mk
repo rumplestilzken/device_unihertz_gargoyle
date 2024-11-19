@@ -7,7 +7,7 @@ LOCAL_MODULE_HOST_OS := linux
 LOCAL_CPPFLAGS := -Wall -Wextra -Wl
 LOCAL_LDLIBS := -llog
 
-LOCAL_SRC_FILES := uinput-titan.h uinput-titan.c 
+LOCAL_SRC_FILES := uinput-titan.c 
 
 include $(BUILD_EXECUTABLE)
 
@@ -18,6 +18,6 @@ LOCAL_MODULE_HOST_OS := linux
 LOCAL_CPPFLAGS := -Wall -Wextra -Wl
 LOCAL_LDLIBS := -llog
 
-LOCAL_SRC_FILES := uinput-titan.h uinput-titan.c 
+LOCAL_SRC_FILES := uinput-titan.c 
 
 include $(BUILD_SHARED_LIBRARY)

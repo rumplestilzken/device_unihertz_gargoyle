@@ -15,7 +15,6 @@
 #include <sys/time.h>
 
 #include <jni.h>
-#include "uinput-titan.h"
 
 #define  LOG_TAG    "UINPUT-TITAN"
 
@@ -29,7 +28,7 @@
 
 // android keylayout file codes: http://www.temblast.com/ref/akeyscode.htm
 
-
+static uint64_t lastKbdTimestamp;
 
 //now() is in total us mod 10^15
 uint64_t now() {
