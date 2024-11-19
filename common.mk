@@ -1,6 +1,11 @@
 RESOURCE_PATH := device/unihertz/
 
+# WITH_ADB_INSECURE := true
+ALLOW_MISSING_DEPENDENCIES = true
+
 #BOARD_VENDOR_SEPOLICY_DIRS += device/unihertz/sepolicy
+# Overlays
+DEVICE_PACKAGE_OVERLAYS += $(RESOURCE_PATH)/overlay-lineage
 
 TARGET_NO_KERNEL_OVERRIDE := true
 
